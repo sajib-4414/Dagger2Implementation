@@ -9,12 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.arefin.dagger2loginlistapplication.sharedpref_injections.SharedPrefComponent;
+import com.example.arefin.dagger2loginlistapplication.sharedpref_injections.SharedPreferenceModule;
+
 import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText inputUsername, inputPassword;
-    Button btnLogin,btnShowSavedData;
+    Button btnShowTodos, btnShowSavedCredentials,btnClearSavedCredentials;
 
     //once you injected a module, you can inject as many things as you want
     @Inject
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Inject
     SharedPreferences.Editor sharedPrefEditor;
+
     //the component which will help dagger injection
     private SharedPrefComponent sharedPrefComponent;
 
@@ -31,20 +35,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initViews();
         initDependencyInjections();
-        checkIsLoggedIn();
     }
 
-    private void checkIsLoggedIn() {
-        if(sharedPreferences.getString(Constants.USERNAME_KEY,"").length() != 0
-            && sharedPreferences.getString(Constants.PASSWORD_KEY,"").length() != 0) {
-            Toast.makeText(getApplicationContext(),"You are logged in", Toast.LENGTH_SHORT).show();
-            showTodos();
+    private void showTodos() {
+        if(sharedPreferences.contains(Constants.USERNAME_KEY) && sharedPreferences.contains(Constants.PASSWORD_KEY))
+                showTodosScreen();
+        else {
+            Toast.makeText(getApplicationContext(),"Login first",Toast.LENGTH_SHORT).show();
+            showLoginScreen();
         }
     }
 
-    private void showTodos()
+    private void showTodosScreen()
     {
         Intent intent = new Intent(this, TodoLists.class);
+        startActivity(intent);
+    }
+
+    private void showLoginScreen()
+    {
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
@@ -62,27 +72,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initViews() {
         inputUsername = findViewById(R.id.inputUsername);
         inputPassword = findViewById(R.id.inputPassword);
-        btnLogin = findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(this);
-        btnShowSavedData = findViewById(R.id.btnShowData);
-        btnShowSavedData.setOnClickListener(this);
+        btnShowTodos = findViewById(R.id.btnShowTodos);
+        btnShowTodos.setOnClickListener(this);
+        btnShowSavedCredentials = findViewById(R.id.btnShowSavedCredentials);
+        btnShowSavedCredentials.setOnClickListener(this);
+        btnClearSavedCredentials = findViewById(R.id.btnClearSavedCredentials);
+        btnClearSavedCredentials.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId())
         {
-            case R.id.btnLogin:
-                sharedPrefEditor.putString(Constants.USERNAME_KEY, inputUsername.getText().toString());
-                sharedPrefEditor.putString(Constants.PASSWORD_KEY, inputPassword.getText().toString());
-                sharedPrefEditor.apply();
+            case R.id.btnShowTodos:
                 showTodos();
                 break;
-            case R.id.btnShowData:
-                inputUsername.setText(sharedPreferences.getString(Constants.USERNAME_KEY,""));
-                inputPassword.setText(sharedPreferences.getString(Constants.PASSWORD_KEY,""));
-                Toast.makeText(getApplicationContext(),"Data shown",Toast.LENGTH_SHORT).show();
+            case R.id.btnShowSavedCredentials:
+                if(inputPassword.getVisibility() == View.VISIBLE){
+                    btnShowSavedCredentials.setText(btnShowSavedCredentials.getText().toString().replace("Hide","Show"));
+                    inputUsername.setVisibility(View.GONE);
+                    inputPassword.setVisibility(View.GONE);
+                }
+                else{
+                    inputUsername.setText(sharedPreferences.getString(Constants.USERNAME_KEY,""));
+                    inputPassword.setText(sharedPreferences.getString(Constants.PASSWORD_KEY,""));
+                    inputUsername.setVisibility(View.VISIBLE);
+                    inputPassword.setVisibility(View.VISIBLE);
+                    btnShowSavedCredentials.setText(btnShowSavedCredentials.getText().toString().replace("Show","Hide"));
+                    Toast.makeText(getApplicationContext(),"Data shown",Toast.LENGTH_SHORT).show();
+                }
                 break;
+            case  R.id.btnClearSavedCredentials:
+                sharedPrefEditor.remove(Constants.USERNAME_KEY);
+                sharedPrefEditor.remove(Constants.PASSWORD_KEY);
+                inputPassword.setText("");
+                inputUsername.setText("");
+                Toast.makeText(getApplicationContext(),"Data cleared",Toast.LENGTH_SHORT).show();
+                sharedPrefEditor.apply();
         }
     }
 }

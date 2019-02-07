@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home screen"
+        android:text="@string/login_screen"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/regular_margin"/>
     <EditText
@@ -18,41 +18,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/username"
-        android:visibility="gone"
         android:inputType="text"
         android:layout_margin="@dimen/regular_margin"/>
     <EditText
         android:id="@+id/inputPassword"
-        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password"
-        android:visibility="gone"
+        android:inputType="text"
         android:layout_margin="@dimen/regular_margin"/>
     <Button
-        android:id="@+id/btnShowTodos"
-        android:layout_width="match_parent"
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/show_todos"
+        android:text="@string/login"
         android:textAllCaps="false"
-        android:layout_margin="@dimen/regular_margin"
-        android:layout_gravity="center_horizontal"/>
-    <Button
-        android:id="@+id/btnShowSavedCredentials"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/show_saved_data"
-        android:textAllCaps="false"
-        android:layout_marginRight="@dimen/regular_margin"
-        android:layout_marginLeft="@dimen/regular_margin"
-        android:layout_gravity="center_horizontal"/>
-    <Button
-        android:id="@+id/btnClearSavedCredentials"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/clear_saved_data"
-        android:textAllCaps="false"
-        android:layout_margin="@dimen/regular_margin"
+        android:layout_marginBottom="@dimen/regular_margin"
         android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>
