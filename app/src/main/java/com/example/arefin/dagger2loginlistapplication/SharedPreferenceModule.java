@@ -22,6 +22,12 @@ public class SharedPreferenceModule {
 
     @Provides
     @Singleton
+    public SharedPreferences.Editor getSharedPreferenceEditor(){
+        return getSharedPreference().edit();
+    }
+
+    @Provides
+    @Singleton
     public SharedPreferences getSharedPreference(){
         SharedPreferences pref = context.getSharedPreferences(SharedPreferenceName, SharedPreferencesModePrivate);
         return pref;
