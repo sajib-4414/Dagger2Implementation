@@ -3,5 +3,8 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="show_saved_data">Show saved data</string>
+    <string name="show_saved_data">Show saved credentials</string>
+    <string name="show_todos">Show Todos</string>
+    <string name="clear_saved_data">Clear saved credentials</string>
+    <string name="login_screen">Login Screen</string>
 </resources>

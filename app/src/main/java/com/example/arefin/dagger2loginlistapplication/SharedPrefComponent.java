@@ -7,5 +7,6 @@ import dagger.Component;
 @Component(modules = {SharedPreferenceModule.class})
 @Singleton
 public interface SharedPrefComponent {
+    void inject(LoginActivity loginActivity);
     void inject(MainActivity mainActivity);
 }
