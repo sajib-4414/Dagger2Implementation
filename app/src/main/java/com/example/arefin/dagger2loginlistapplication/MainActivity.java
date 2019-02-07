@@ -16,8 +16,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText inputUsername, inputPassword;
     Button btnLogin,btnShowSavedData;
 
+    //once you injected a module, you can inject as many things as you want
     @Inject
     SharedPreferences sharedPreferences;
+
+    @Inject
+    SharedPreferences.Editor sharedPrefEditor;
     //the component which will help dagger injection
     private SharedPrefComponent sharedPrefComponent;
 
@@ -69,10 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.btnLogin:
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(Constants.USERNAME_KEY, inputUsername.getText().toString());
-                editor.putString(Constants.PASSWORD_KEY, inputPassword.getText().toString());
-                editor.apply();
+                sharedPrefEditor.putString(Constants.USERNAME_KEY, inputUsername.getText().toString());
+                sharedPrefEditor.putString(Constants.PASSWORD_KEY, inputPassword.getText().toString());
+                sharedPrefEditor.apply();
                 showTodos();
                 break;
             case R.id.btnShowData:

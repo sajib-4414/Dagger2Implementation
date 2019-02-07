@@ -12,19 +12,22 @@ import static com.example.arefin.dagger2loginlistapplication.Constants.SharedPre
 import static com.example.arefin.dagger2loginlistapplication.Constants.SharedPreferencesModePrivate;
 
 @Module
-public class SharedPreferenceModule {
+ class SharedPreferenceModule {
     private Context context;
 
-
-    public SharedPreferenceModule(Context context){
+    SharedPreferenceModule(Context context){
         this.context = context;
     }
 
     @Provides
     @Singleton
-    public SharedPreferences getSharedPreference(){
-        SharedPreferences pref = context.getSharedPreferences(SharedPreferenceName, SharedPreferencesModePrivate);
-        return pref;
+    SharedPreferences.Editor getSharedPreferenceEditor(){
+        return getSharedPreference().edit();
     }
 
+    @Provides
+    @Singleton
+    SharedPreferences getSharedPreference(){
+        return context.getSharedPreferences(SharedPreferenceName, SharedPreferencesModePrivate);
+    }
 }
