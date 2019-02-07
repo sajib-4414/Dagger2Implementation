@@ -3,6 +3,8 @@ package com.example.arefin.dagger2loginlistapplication.sharedpref_injections;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.arefin.dagger2loginlistapplication.DynamicToast;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -29,5 +31,11 @@ import static com.example.arefin.dagger2loginlistapplication.Constants.SharedPre
     @Singleton
     SharedPreferences getSharedPreference(){
         return context.getSharedPreferences(SharedPreferenceName, SharedPreferencesModePrivate);
+    }
+
+    @Provides
+    @Singleton
+    DynamicToast getDynamicToast(){
+        return new DynamicToast(context);
     }
 }

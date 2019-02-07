@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.arefin.dagger2loginlistapplication.sharedpref_injections.DaggerSharedPrefComponent;
 import com.example.arefin.dagger2loginlistapplication.sharedpref_injections.SharedPrefComponent;
 import com.example.arefin.dagger2loginlistapplication.sharedpref_injections.SharedPreferenceModule;
 
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Inject
     SharedPreferences.Editor sharedPrefEditor;
 
+    @Inject
+    DynamicToast toast;
+
     //the component which will help dagger injection
     private SharedPrefComponent sharedPrefComponent;
 
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(sharedPreferences.contains(Constants.USERNAME_KEY) && sharedPreferences.contains(Constants.PASSWORD_KEY))
                 showTodosScreen();
         else {
-            Toast.makeText(getApplicationContext(),"Login first",Toast.LENGTH_SHORT).show();
+            toast.show("Login first");
             showLoginScreen();
         }
     }
@@ -99,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     inputUsername.setVisibility(View.VISIBLE);
                     inputPassword.setVisibility(View.VISIBLE);
                     btnShowSavedCredentials.setText(btnShowSavedCredentials.getText().toString().replace("Show","Hide"));
-                    Toast.makeText(getApplicationContext(),"Data shown",Toast.LENGTH_SHORT).show();
+                    toast.show("Data shown");
                 }
                 break;
             case  R.id.btnClearSavedCredentials:
@@ -107,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 sharedPrefEditor.remove(Constants.PASSWORD_KEY);
                 inputPassword.setText("");
                 inputUsername.setText("");
-                Toast.makeText(getApplicationContext(),"Data cleared",Toast.LENGTH_SHORT).show();
+                toast.show("Data cleared");
                 sharedPrefEditor.apply();
         }
     }
