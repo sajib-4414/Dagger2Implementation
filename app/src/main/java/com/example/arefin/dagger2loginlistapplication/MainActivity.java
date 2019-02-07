@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.arefin.dagger2loginlistapplication.sharedpref_injections.SharedPrefComponent;
+import com.example.arefin.dagger2loginlistapplication.sharedpref_injections.SharedPreferenceModule;
+
 import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

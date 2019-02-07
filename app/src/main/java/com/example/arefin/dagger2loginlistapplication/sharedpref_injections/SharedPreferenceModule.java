@@ -1,4 +1,4 @@
-package com.example.arefin.dagger2loginlistapplication;
+package com.example.arefin.dagger2loginlistapplication.sharedpref_injections;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,10 +12,10 @@ import static com.example.arefin.dagger2loginlistapplication.Constants.SharedPre
 import static com.example.arefin.dagger2loginlistapplication.Constants.SharedPreferencesModePrivate;
 
 @Module
- class SharedPreferenceModule {
+ public class SharedPreferenceModule {
     private Context context;
 
-    SharedPreferenceModule(Context context){
+    public SharedPreferenceModule(Context context){
         this.context = context;
     }
 
