@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.arefin.dagger2loginlistapplication.sharedpref_injections.DaggerSharedPrefComponent;
 import com.example.arefin.dagger2loginlistapplication.sharedpref_injections.SharedPrefComponent;
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showTodosScreen()
     {
-        Intent intent = new Intent(this, TodoLists.class);
+        Intent intent = new Intent(this, TodoListActivity.class);
         startActivity(intent);
     }
 
