@@ -1,4 +1,4 @@
-# Dagger2Implementation
+# Todo app with Rx java 2, Dagger 2 implementation
 A project demonstrating and explaining dagger 2 library usage
 
 Guidelines taken help from
