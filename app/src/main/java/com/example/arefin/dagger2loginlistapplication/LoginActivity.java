@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void showTodos()
     {
-        Intent intent = new Intent(this, TodoLists.class);
+        Intent intent = new Intent(this, TodoListActivity.class);
         startActivity(intent);
     }
 

@@ -7,35 +7,32 @@ import android.widget.Toast;
 
 import com.example.arefin.dagger2loginlistapplication.models.Todo;
 import com.example.arefin.dagger2loginlistapplication.network.APIService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.example.arefin.dagger2loginlistapplication.network.injections.DaggerRetrofitNetworkComponent;
+import com.example.arefin.dagger2loginlistapplication.network.injections.RetrofitNetworkComponent;
+import com.example.arefin.dagger2loginlistapplication.network.injections.RetrofitNetworkModule;
 
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import static com.example.arefin.dagger2loginlistapplication.Constants.BASE_URL;
 
-public class TodoLists extends AppCompatActivity {
+public class TodoListActivity extends AppCompatActivity {
+
+    @Inject
+    APIService apiService;
+
+    //the component which will help dagger injection
+    private RetrofitNetworkComponent retrofitNetworkComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_lists);
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        APIService apiService = retrofit.create(APIService.class);
-
+        initDependencyInjections();
         Call<List<Todo>> call = apiService.getAllTodos();
         call.enqueue(new Callback<List<Todo>>() {
             @Override
@@ -65,5 +62,15 @@ public class TodoLists extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+    }
+
+    private void initDependencyInjections() {
+        //the DaggerSharedPrefComponent name is generated after a rebuild
+        retrofitNetworkComponent = DaggerRetrofitNetworkComponent
+                .builder()
+                //the number of modules declared in the pref module, all can be here to use
+                .retrofitNetworkModule(new RetrofitNetworkModule())
+                .build();
+        retrofitNetworkComponent.inject(this);
     }
 }

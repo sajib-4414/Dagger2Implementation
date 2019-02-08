@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TodoLists" />
+        <activity android:name=".TodoListActivity" />
         <activity android:name=".LoginActivity"/>
     </application>
 
