@@ -10,6 +10,19 @@
         android:id="@+id/tvUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hi am todo lists, contents will come later"/>
+        android:layout_centerHorizontal="true"
+        android:text="You will see the list of todos below soon"
+        android:layout_marginBottom="@dimen/regular_margin"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/todosRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvUp"/>
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_alignTop="@+id/todosRecyclerView"
+        android:layout_centerHorizontal="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
 
 </RelativeLayout>

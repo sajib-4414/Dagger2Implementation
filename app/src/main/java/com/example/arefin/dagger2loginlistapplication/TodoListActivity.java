@@ -2,6 +2,11 @@ package com.example.arefin.dagger2loginlistapplication;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +17,7 @@ import com.example.arefin.dagger2loginlistapplication.network.injections.Retrofi
 import com.example.arefin.dagger2loginlistapplication.network.injections.RetrofitNetworkModule;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,6 +33,10 @@ public class TodoListActivity extends AppCompatActivity {
 
     @Inject
     APIService apiService;
+    ProgressBar progressBar;
+    RecyclerView recyclerView;
+    TodosBasicListAdapter adapter;
+    List<Todo> todos;
 
     //the component which will help dagger injection
     private RetrofitNetworkComponent retrofitNetworkComponent;
@@ -35,6 +45,7 @@ public class TodoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_lists);
+        initViews();
         initDependencyInjections();
         Observable<List<Todo>> allTodosObservable = apiService.getAllTodos();
         allTodosObservable
@@ -43,9 +54,19 @@ public class TodoListActivity extends AppCompatActivity {
                 .subscribe(this::onNextListener,this::onErrorListener, this::onCompleteListener);
     }
 
+    private void initViews() {
+        progressBar = findViewById(R.id.progress_circular);
+        recyclerView = findViewById(R.id.todosRecyclerView);
+        todos = new ArrayList<>();
+        adapter = new TodosBasicListAdapter(todos);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.setAdapter(adapter);
+    }
+
     private void onCompleteListener() {
-        Toast.makeText(this, "Api call complete",
-                Toast.LENGTH_LONG).show();
+        progressBar.setVisibility(View.GONE);
     }
 
     private void initDependencyInjections() {
@@ -59,19 +80,15 @@ public class TodoListActivity extends AppCompatActivity {
     }
     private void onNextListener(List<Todo> todos) {
         if (todos != null && todos.size() != 0) {
-            String titles = "";
-            for (Todo todo: todos){
-                titles = titles + " " + todo.getTitle() + "\n";
-            }
-            ((TextView)findViewById(R.id.tvUp)).setText(titles);
-            Toast.makeText(getApplicationContext(),"success",Toast.LENGTH_SHORT).show();
+            this.todos.addAll(todos);
+            adapter.notifyDataSetChanged();
         }
         else
             Toast.makeText(this, "NO RESULTS FOUND", Toast.LENGTH_LONG).show();
-
     }
 
     private void onErrorListener(Throwable t) {
+        progressBar.setVisibility(View.GONE);
 
         Toast.makeText(this, "ERROR IN FETCHING API RESPONSE. Try again",
                 Toast.LENGTH_LONG).show();
