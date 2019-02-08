@@ -16,6 +16,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,35 +36,16 @@ public class TodoListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_lists);
         initDependencyInjections();
-        Call<List<Todo>> call = apiService.getAllTodos();
-        call.enqueue(new Callback<List<Todo>>() {
-            @Override
-            public void onResponse(Call<List<Todo>> call, Response<List<Todo>> response) {
-                if(response.isSuccessful()) {
-                    List<Todo> todoList = response.body();
-                    String titles = "";
-                    for (Todo todo: todoList){
-                        titles = titles + " " + todo.getTitle() + "\n";
-                    }
-                    ((TextView)findViewById(R.id.tvUp)).setText(titles);
-                    Toast.makeText(getApplicationContext(),"success",Toast.LENGTH_SHORT).show();
-//                    changesList.forEach(change -> System.out.println(change.subject));
-                } else {
-                    System.out.println(response.errorBody());
-                    try {
-                        Toast.makeText(getApplicationContext(),response.errorBody().string(),Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+        Observable<List<Todo>> allTodosObservable = apiService.getAllTodos();
+        allTodosObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onNextListener,this::onErrorListener, this::onCompleteListener);
+    }
 
-            @Override
-            public void onFailure(Call<List<Todo>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"failure",Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
-            }
-        });
+    private void onCompleteListener() {
+        Toast.makeText(this, "Api call complete",
+                Toast.LENGTH_LONG).show();
     }
 
     private void initDependencyInjections() {
@@ -73,4 +57,53 @@ public class TodoListActivity extends AppCompatActivity {
                 .build();
         retrofitNetworkComponent.inject(this);
     }
+    private void onNextListener(List<Todo> todos) {
+        if (todos != null && todos.size() != 0) {
+            String titles = "";
+            for (Todo todo: todos){
+                titles = titles + " " + todo.getTitle() + "\n";
+            }
+            ((TextView)findViewById(R.id.tvUp)).setText(titles);
+            Toast.makeText(getApplicationContext(),"success",Toast.LENGTH_SHORT).show();
+        }
+        else
+            Toast.makeText(this, "NO RESULTS FOUND", Toast.LENGTH_LONG).show();
+
+    }
+
+    private void onErrorListener(Throwable t) {
+
+        Toast.makeText(this, "ERROR IN FETCHING API RESPONSE. Try again",
+                Toast.LENGTH_LONG).show();
+    }
+
+    //NON reactx listener
+    //        call.enqueue(new Callback<List<Todo>>() {
+//            @Override
+//            public void onResponse(Call<List<Todo>> call, Response<List<Todo>> response) {
+//                if(response.isSuccessful()) {
+//                    List<Todo> todoList = response.body();
+//                    String titles = "";
+//                    for (Todo todo: todoList){
+//                        titles = titles + " " + todo.getTitle() + "\n";
+//                    }
+//                    ((TextView)findViewById(R.id.tvUp)).setText(titles);
+//                    Toast.makeText(getApplicationContext(),"success",Toast.LENGTH_SHORT).show();
+////                    changesList.forEach(change -> System.out.println(change.subject));
+//                } else {
+//                    System.out.println(response.errorBody());
+//                    try {
+//                        Toast.makeText(getApplicationContext(),response.errorBody().string(),Toast.LENGTH_SHORT).show();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Todo>> call, Throwable t) {
+//                Toast.makeText(getApplicationContext(),"failure",Toast.LENGTH_SHORT).show();
+//                t.printStackTrace();
+//            }
+//        });
 }
