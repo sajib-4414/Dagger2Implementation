@@ -41,11 +41,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showTodos() {
-        if(sharedPreferences.contains(Constants.USERNAME_KEY) && sharedPreferences.contains(Constants.PASSWORD_KEY))
+        if(Utils.isNetworkAvailable(getApplicationContext())) {
+            if (sharedPreferences.contains(Constants.USERNAME_KEY) && sharedPreferences.contains(Constants.PASSWORD_KEY))
                 showTodosScreen();
+            else {
+                toast.show("Login first");
+                showLoginScreen();
+            }
+        }
         else {
-            toast.show("Login first");
-            showLoginScreen();
+            toast.show("Please connect to internet first ");
         }
     }
 

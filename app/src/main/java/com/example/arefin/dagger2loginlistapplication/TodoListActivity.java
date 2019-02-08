@@ -85,7 +85,6 @@ public class TodoListActivity extends AppCompatActivity {
         }
         else
             Toast.makeText(this, "NO RESULTS FOUND", Toast.LENGTH_LONG).show();
-
     }
 
     private void onErrorListener(Throwable t) {
