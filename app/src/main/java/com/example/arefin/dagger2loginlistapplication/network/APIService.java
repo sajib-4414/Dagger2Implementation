@@ -13,4 +13,7 @@ public interface APIService {
 
     @GET("todos/{todoid}")
     Observable<Todo> getTodoDetails(@Path("todoid") int id);
+
+    @GET("users/{userid}")
+    Observable getUserInfo(@Path("userid") int userId);
 }
