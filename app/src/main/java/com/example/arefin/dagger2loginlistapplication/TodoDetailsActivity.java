@@ -3,7 +3,9 @@ package com.example.arefin.dagger2loginlistapplication;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.arefin.dagger2loginlistapplication.models.Todo;
@@ -24,6 +26,9 @@ import io.reactivex.schedulers.Schedulers;
 
 
 public class TodoDetailsActivity extends AppCompatActivity {
+
+    TextView user, title;
+    ProgressBar progressBar;
     int todoId;
     @Inject
     APIService apiService;
@@ -35,6 +40,9 @@ public class TodoDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_details);
+        user = findViewById(R.id.tvDetailsUser);
+        title = findViewById(R.id.tvDetailsTitle);
+        progressBar = findViewById(R.id.progressBar);
         disposables = new CompositeDisposable();
         initInjections();
         todoId = getIntent().getIntExtra(Constants.TODO_ID,-1);
@@ -60,22 +68,26 @@ public class TodoDetailsActivity extends AppCompatActivity {
                 .subscribe(new Observer<Todo>() {
                     @Override
                     public void onSubscribe(Disposable d) {
+                        progressBar.setVisibility(View.VISIBLE);
                         disposables.add(d);
                     }
 
                     @Override
                     public void onNext(Todo todo) {
-                        Toast.makeText(getApplicationContext(), todo.getTitle(), Toast.LENGTH_SHORT).show();
+                        user.setText(todo.getUserId().toString());
+                        title.setText(todo.getTitle());
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "some error occurred", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onComplete() {
                         // Updates UI with data
+                        progressBar.setVisibility(View.GONE);
 
                     }
                 });
