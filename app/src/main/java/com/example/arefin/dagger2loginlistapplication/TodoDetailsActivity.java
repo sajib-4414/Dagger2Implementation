@@ -60,7 +60,7 @@ public class TodoDetailsActivity extends AppCompatActivity {
                 .subscribe(new Observer<Todo>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        disposables.add(d);
                     }
 
                     @Override
@@ -79,6 +79,12 @@ public class TodoDetailsActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposables.dispose();
     }
 
     //NON reactx listener
