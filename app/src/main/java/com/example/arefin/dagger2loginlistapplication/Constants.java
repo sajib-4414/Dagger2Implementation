@@ -6,4 +6,5 @@ public interface Constants {
     String USERNAME_KEY = "USERNAME_KEY";
     String PASSWORD_KEY = "PASSWORD_KEY";
     String BASE_URL = "https://jsonplaceholder.typicode.com/";
+    String TODO_ID ="TODO_ID";
 }

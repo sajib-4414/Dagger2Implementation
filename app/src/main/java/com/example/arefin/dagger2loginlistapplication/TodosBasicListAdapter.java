@@ -1,6 +1,7 @@
 package com.example.arefin.dagger2loginlistapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import java.util.List;
 public class TodosBasicListAdapter extends RecyclerView.Adapter<ViewHolderBasicList> {
 
     private List<Todo> todoList;
-
 
     public TodosBasicListAdapter(List<Todo> todoList) {
         this.todoList = todoList;
@@ -33,13 +33,15 @@ public class TodosBasicListAdapter extends RecyclerView.Adapter<ViewHolderBasicL
         holder.title.setText(todo.getTitle());
         holder.userId.setText(todo.getId().toString());
 
-        //reserve for letter
-//        holder.title.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showPopupMenu(holder.overflow);
-//            }
-//        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), TodoDetailsActivity.class);
+                intent.putExtra(Constants.TODO_ID,todo.getId() );
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

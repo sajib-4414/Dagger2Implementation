@@ -1,5 +1,6 @@
 package com.example.arefin.dagger2loginlistapplication.network.injections;
 
+import com.example.arefin.dagger2loginlistapplication.TodoDetailsActivity;
 import com.example.arefin.dagger2loginlistapplication.TodoListActivity;
 
 
@@ -12,4 +13,5 @@ import dagger.Component;
 @Singleton
 public interface RetrofitNetworkComponent {
     void inject(TodoListActivity todoListActivity);
+    void doInjections(TodoDetailsActivity activity);
 }

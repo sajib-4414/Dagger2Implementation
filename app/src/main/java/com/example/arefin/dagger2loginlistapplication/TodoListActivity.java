@@ -94,33 +94,4 @@ public class TodoListActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
     }
 
-    //NON reactx listener
-    //        call.enqueue(new Callback<List<Todo>>() {
-//            @Override
-//            public void onResponse(Call<List<Todo>> call, Response<List<Todo>> response) {
-//                if(response.isSuccessful()) {
-//                    List<Todo> todoList = response.body();
-//                    String titles = "";
-//                    for (Todo todo: todoList){
-//                        titles = titles + " " + todo.getTitle() + "\n";
-//                    }
-//                    ((TextView)findViewById(R.id.tvUp)).setText(titles);
-//                    Toast.makeText(getApplicationContext(),"success",Toast.LENGTH_SHORT).show();
-////                    changesList.forEach(change -> System.out.println(change.subject));
-//                } else {
-//                    System.out.println(response.errorBody());
-//                    try {
-//                        Toast.makeText(getApplicationContext(),response.errorBody().string(),Toast.LENGTH_SHORT).show();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Todo>> call, Throwable t) {
-//                Toast.makeText(getApplicationContext(),"failure",Toast.LENGTH_SHORT).show();
-//                t.printStackTrace();
-//            }
-//        });
 }
